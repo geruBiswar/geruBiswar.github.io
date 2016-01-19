@@ -25,13 +25,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </head>
 <body> 
 
+
 <script>
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : '786024721507821',
+      appId      : '1070066693044549',
       xfbml      : true,
       version    : 'v2.5'
     });
+
+    // ADD ADDITIONAL FACEBOOK CODE HERE
   };
 
   (function(d, s, id){
@@ -42,6 +45,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 </script>
+
+
+
+
 <div class="banner">
 	<div class="wrap">
 		<div class="banner-text">
@@ -64,16 +71,37 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   data-show-faces="true">
 </div>
 </div>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-68262183-1', 'auto');
-  ga('send', 'pageview');
+	  ga('create', 'UA-68262183-1', 'auto');
+	  ga('send', 'pageview');
+	</script>
+	
+	function onLogin(response) {
+  if (response.status == 'connected') {
+    FB.api('/me?fields=first_name', function(data) {
+      var welcomeBlock = document.getElementById('fb-welcome');
+      welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
+    });
+  }
+}
 
-</script>
+FB.getLoginStatus(function(response) {
+  // Check login status on load, and if the user is
+  // already logged in, go directly to the welcome message.
+  if (response.status == 'connected') {
+    onLogin(response);
+  } else {
+    // Otherwise, show Login dialog first.
+    FB.login(function(response) {
+      onLogin(response);
+    }, {scope: 'user_friends, email'});
+  }
+});
 
 </body>
 </html>
